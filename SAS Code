@@ -148,7 +148,7 @@ data adtte_events;
   trtdur  = trtedt - trtsdt + 1;
 
   /* Define logic applied to FIRST DERM AE: */
-  if not missing(astdt_num) and astdt_num > trtsdt then do;
+  if not missing(astdt_num) and astdt_num >= trtsdt then do;
     adt      = astdt_num;
     cnsr     = 0;
     evntdesc = "Dematologic Event Occured";  
