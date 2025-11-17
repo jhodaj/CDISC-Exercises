@@ -78,12 +78,10 @@ data adae_derm;
   /* Treatment-emergent only */
   if trtemfl = "Y";
 
-  /* Dermatologic definition (you can keep tweaking this list) */
+  /* Dermatologic definition  */
   if 
         index(upcase(aebodsys),"DERMAT") > 0 or
         index(upcase(aebodsys),"SKIN") > 0 or
-        index(upcase(aebodsys),
-              "GENERAL DISORDERS AND ADMINISTRATION SITE CONDITIONS") > 0 or
         index(upcase(aedecod),"APPLICATION SITE") > 0 or
         index(upcase(aedecod),"ERYTHEMA") > 0 or
         index(upcase(aedecod),"PRURITUS") > 0 or
@@ -97,7 +95,6 @@ data adae_derm;
         index(upcase(aedecod),"SKIN EXFOLIATION") > 0 or
         index(upcase(aedecod),"SKIN ULCER") > 0 or
         index(upcase(aedecod),"ACTINIC KERATOSIS") > 0 or
-        /* removed COLD SWEAT */
         index(upcase(aedecod),"DRUG ERUPTION") > 0
     ;
 run;
@@ -351,4 +348,6 @@ proc compare base=src.adtte
   title "Final Validation: Derived ADTTE vs Official ADTTE";
 run;
 title;
+
+
 
