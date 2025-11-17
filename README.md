@@ -1,9 +1,6 @@
-# ADAE-ADSL-TO-ADTTE
-In this repository we are deriving the ADTTE dataset from the ADAE and ADSL datasets. 
-
 # ADTTE Derivation: Time to First Dermatologic Event
 
-This project shows how to derive an ADTTE-like analysis dataset  
+This project shows how to derive an ADTTE-like analysis dataset dataset from the ADAE and ADSL datasets.
 Time-to-First Dermatologic Event, `TTDE` from CDISC ADAE and ADSL datasets using SAS.
 
 It is designed as a reproducible example of:
