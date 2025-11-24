@@ -35,14 +35,11 @@ Example structure:
 
 ```text
 .
-├── derive_adtte_from_adae.sas    # Main derivation program
-├── CDISC/
-│   └── DATASETS/
-│       ├── adae.xpt              # ADAE in XPT format
-│       ├── adsl.xpt              # ADSL in XPT format
-│       └── adtte.xpt             # Official ADTTE (for QC)
-└── README.md
-
+├── README.md    
+├── SAS Code for Deriving ADTTE Dataset
+├── adae.xpt              # ADAE in XPT format
+├── adsl.xpt              # ADSL in XPT format
+└── adtte.xpt             # Official ADTTE (for QC)
 ```
 
 ## 3. Derivation Logic (High-Level)
