@@ -1,5 +1,4 @@
 /**************************************************************************
-Program:     derive_adtte_from_adae.sas
 Purpose:     Derive ADTTE (Time-to-First Dermatologic Event) from ADAE & ADSL
 Author:      Jezerca Hodaj
 Environment: SAS OnDemand for Academics
@@ -325,15 +324,61 @@ run;
 /*===============================================================
   STEP 11: QC and final PROC COMPARE
 ===============================================================*/
+
 proc freq data=src.adtte_aligned_final;
   tables cnsr / nocum;
-  title "Censor Flag Distribution (0=Event, 1=Censored)";
+  title "Censor Flag Distribution (0=Event, 1=Censored) in Derived ADTTE";
 run;
 
-proc means data=src.adtte_aligned_final n mean min max;
-  var aval trtdur;
-  title "Summary of Time-to-Event and Treatment Duration";
+proc freq data=src.adtte;
+  tables cnsr / nocum;
+  title "Censor Flag Distribution (0=Event, 1=Censored) in ADTTE (CDISC)";
 run;
+
+
+proc freq data=src.adtte_aligned_final;
+  tables evntdesc / nocum;
+  title "Event or Censoring Description Distribution in Derived ADTTE";
+run;
+
+proc freq data=src.adtte;
+  tables evntdesc / nocum;
+  title "Event or Censoring Description Distribution in ADTTE (CDISC)";
+run;
+
+
+proc freq data=src.adtte_aligned_final;
+  tables srcdom / nocum;
+  title "Source Domain Distribution in Derived ADTTE";
+run;
+
+proc freq data=src.adtte;
+  tables srcdom / nocum;
+  title "Source Domain Distribution in ADTTE (CDISC)";
+run;
+
+
+proc freq data=src.adtte_aligned_final;
+  tables srcvar / nocum;
+  title "Source Variable Distribution in Derived ADTTE";
+run;
+
+proc freq data=src.adtte;
+  tables srcvar / nocum;
+  title "Source Varable Distribution in ADTTE (CDISC)";
+run;
+
+
+proc freq data=src.adtte_aligned_final;
+  tables srcseq / nocum;
+  title "Source Sequence Number Distribution in Derived ADTTE";
+run;
+
+proc freq data=src.adtte;
+  tables srcseq / nocum;
+  title "Source Sequence Number Distribution in ADTTE (CDISC)";
+run;
+
 
 proc sort data=src.adtte;               by studyid usubjid paramcd; run;
 proc sort data=src.adtte_aligned_final; by studyid usubjid paramcd; run;
@@ -348,6 +393,3 @@ proc compare base=src.adtte
   title "Final Validation: Derived ADTTE vs Official ADTTE";
 run;
 title;
-
-
-
