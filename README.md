@@ -58,6 +58,7 @@ Create ADAE1 by left-joining ADAE to ADSL by USUBJID and keeping:
 From ADAE1, create ADAE_DERM:
   - Keep only treatment-emergent AEs:
 TRTEMFL = "Y"
+
 •	Flag as dermatologic if:
 o	AEBODSYS contains "DERMAT" or "SKIN", or
 o	AEDECOD contains terms such as:
