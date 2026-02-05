@@ -31,7 +31,7 @@ The main parameter:
 
 ## 2. Files in This Repository
 
-Example structure:
+Structure:
 
 ```text
 .
