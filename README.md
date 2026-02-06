@@ -1,4 +1,4 @@
-CDISC Pilot ADaM Derivations in SAS: ADSL, ADAE, ADTTE (TTDE)
+## CDISC Pilot ADaM Derivations in SAS: ADSL, ADAE, ADTTE (TTDE)
 This repository contains SAS programs demonstrating derivation of core ADaM datasets using the CDISC SDTM/ADaM Pilot Project data:
 •	ADSL (Subject-Level Analysis Dataset)
 •	ADAE (Adverse Events Analysis Dataset)
@@ -7,7 +7,7 @@ The ADTTE program also includes validation against the official pilot ADTTE usin
 Source data: CDISC SDTM/ADaM Pilot Project
 https://github.com/cdisc-org/sdtm-adam-pilot-project/tree/master
 
-What this shows
+## What this shows
 •	Practical ADaM-style derivations in SAS
 •	Linking subject-level data (ADSL) to event-level data (ADAE)
 •	Building a time-to-event endpoint (TTDE) from AE + subject-level dates
@@ -15,7 +15,7 @@ What this shows
 
 ---
 
-Repository Structure
+## Repository Structure
 ```
 .
 ├── README.md
@@ -34,21 +34,22 @@ Repository Structure
 
 ```
 
-How to run
-Prerequisites
+## How to run
+### Prerequisites
 •	SAS (Base SAS or SAS OnDemand for Academics)
 •	XPT files available locally:
 o	adsl.xpt, adae.xpt, and adtte.xpt (official reference for ADTTE QC)
-Run order
+### Run order
 1.	Run programs/01_derive_adsl.sas
 2.	Run programs/02_derive_adae.sas
 3.	Run programs/03_derive_adtte_ttde.sas
-What to review after running
+
+#### What to review after running
 •	Derived datasets in your output library (e.g., SRC.*)
 •	QC tables produced by PROC COMPARE
 
 
-Program overview
+## Program overview
 1) ADSL derivation (01_derive_adsl.sas)
 Derives subject-level analysis variables (one row per subject) used downstream.
 Typical content includes demographics, key reference/treatment dates, and analysis flags. Compares it to the official pilot ADSL using PROC COMPARE.
@@ -73,17 +74,17 @@ and to compare the derived dataset with an **official ADTTE** (provided as an XP
 
 ## 2. Derivation Logic
 The derivation follows these main steps (mirroring the define.xml):
-2.1 Libraries & Imports
+### 2.1 Libraries & Imports
 1.	Assign SAS libraries (e.g. src) and XPORT locations.
 2.	Use PROC COPY to import:
 -	adae.xpt → src.adae
 -	adsl.xpt → src.adsl
 -	adtte.xpt → src.adtte (official reference)
-2.2 Merge ADAE + ADSL Core Variables
+### 2.2 Merge ADAE + ADSL Core Variables
 Create ADAE1 by left-joining ADAE to ADSL by USUBJID and keeping:
 -	Subject-level variables (STUDYID, SITEID, AGE, SEX, RACE, TRTSDT, TRTEDT, RFSTDTC, RFENDTC, TRT01*, etc.)
 -	AE-level variables (AEDECOD, AEBODSYS, TRTEMFL, ASTDT, AENDT, AESEQ)
-2.3 Identify Dermatologic Events
+### 2.3 Identify Dermatologic Events
 From ADAE1, create ADAE_DERM:
   - Keep only treatment-emergent AEs:
 TRTEMFL = "Y"
@@ -106,13 +107,13 @@ o	AEDECOD contains terms such as:
 -	ACTINIC KERATOSIS
 -	DRUG ERUPTION
 You can think of this as the working definition of a dermatologic AE.
-2.4 First Dermatologic AE per Subject
+### 2.4 First Dermatologic AE per Subject
 1.	Sort ADAE_DERM by:
 2.	BY USUBJID ASTDT AESEQ;
 3.	Create FIRST_DERM containing only:
 4.	IF FIRST.USUBJID;
 This gives one row per subject, corresponding to the first dermatologic AE chronologically.
-2.5 Derive ADT, AVAL, CNSR (Events)
+### 2.5 Derive ADT, AVAL, CNSR (Events)
 Merge FIRST_DERM with ADSL and:
 •	Convert RFSTDTC and RFENDTC to SAS dates (RFSTDT, RFENDT).
 •	Convert ASTDT to a numeric date (ASTDT_NUM) if needed.
@@ -138,7 +139,7 @@ Finally:
 o	PARAMCD = "TTDE"
 o	PARAM = "Time to First Dermatologic Event"
 This dataset is called ADTTE_EVENTS.
-2.6 Derive Censored Records (No Derm AE)
+### 2.6 Derive Censored Records (No Derm AE)
 For subjects who never appear in ADAE_DERM:
 •	Start from ADSL and derive:
 o	STARTDT = RFSTDT
@@ -149,7 +150,7 @@ o	PARAMCD = "TTDE"
 o	PARAM = "Time to First Dermatologic Event"
 o	AVAL = ADT – STARTDT + 1
 This dataset is called CENSORED2.
-2.7 Combine & Align
+### 2.7 Combine & Align
 •	Combine ADTTE_EVENTS and CENSORED2 into:
 o	SRC.ADTTE_DERIVED
 •	Reorder and relabel variables to match CDISC ADTTE structure:
@@ -173,7 +174,7 @@ ________________________________________
 •	This project focuses on a single parameter (TTDE) and a single event type (dermatologic AEs); extending to other TTE endpoints would follow a similar pattern.
 •	Minor differences may still occur if the original ADTTE used slightly different inclusion/exclusion rules for AEs (e.g. seriousness, toxicity grade, additional MedDRA groupings).
 
-1. Why ADT and AVAL have 8 mismatches
+### 1. Why ADT and AVAL have 8 mismatches
 From your summary table of the eight subjects with ADT mismatches, you’ve basically shown that: 
 MISMATCHES-BY-USUBJID
 •	In most subjects, our rule
@@ -185,7 +186,7 @@ o	sometimes use a particular AE date (e.g. APPLICATION SITE ERYTHEMA, PRURITUS, 
 Because AVAL = ADT – STARTDT + 1, every ADT mismatch automatically creates a mismatch in AVAL for those same 8 records; nothing wrong with the AVAL logic, it’s just inherited from ADT.
 o From these specific 8 USUBJID, for three of them the ADT has started when a skin related adverse event happened, therefore the CNSR, EVNTDSCR, SRCDOM, SRCVAR are correctly derived. For the 5 remaining USUBJID, because of the above reasons, we have mismatches.
 
-2. Why SRCSEQ is off (8 + 2)
+### 2. Why SRCSEQ is off (8 + 2)
 What I noticed about SRCSEQ is:
 We’re currently taking SRCSEQ = AESEQ from the row you used to derive ADT (i.e., FIRST_DERM).
 But:
