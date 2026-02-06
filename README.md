@@ -71,7 +71,7 @@ The goal is to recreate the **ADTTE Time-to-First Dermatologic Event (TTDE)** da
 
 and to compare the derived dataset with an **official ADTTE** (provided as an XPT file).
 
-## 2. Derivation Logic (High-Level)
+## 2. Derivation Logic
 The derivation follows these main steps (mirroring the define.xml):
 2.1 Libraries & Imports
 1.	Assign SAS libraries (e.g. src) and XPORT locations.
