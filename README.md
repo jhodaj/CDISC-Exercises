@@ -1,8 +1,8 @@
 ## CDISC Pilot ADaM Derivations in SAS: ADSL, ADAE, ADTTE (TTDE)
 This repository contains SAS programs demonstrating derivation of core ADaM datasets using the CDISC SDTM/ADaM Pilot Project data:
-•	ADSL (Subject-Level Analysis Dataset)
-•	ADAE (Adverse Events Analysis Dataset)
-•	ADTTE for Time to First Dermatologic Event (PARAMCD=TTDE)
+• ADSL (Subject-Level Analysis Dataset)
+• ADAE (Adverse Events Analysis Dataset)
+• ADTTE for Time to First Dermatologic Event (PARAMCD=TTDE)
 The ADTTE program also includes validation against the official pilot ADTTE using PROC COMPARE.
 Source data: CDISC SDTM/ADaM Pilot Project
 https://github.com/cdisc-org/sdtm-adam-pilot-project/tree/master
