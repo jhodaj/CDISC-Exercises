@@ -54,15 +54,16 @@ o	adsl.xpt, adae.xpt, and adtte.xpt (official reference for ADTTE QC)
 ## Program overview
 ```
 1) ADSL derivation (01_derive_adsl.sas)
-Derives subject-level analysis variables (one row per subject) used downstream.
-Typical content includes demographics, key reference/treatment dates, and analysis flags. Compares it to the official pilot ADSL using PROC COMPARE.
+ - Derives subject-level analysis variables (one row per subject) used downstream.
+ - Typical content includes demographics, key reference/treatment dates, and analysis flags.
+ - Compares it to the official pilot ADSL using PROC COMPARE.
 2) ADAE derivation (02_derive_adae.sas)
-Derives analysis AE records and aligns them to ADSL by USUBJID.
-Typical content includes AE descriptors, analysis dates/days, and treatment-emergent logic. Compares it to the official pilot ADAE using PROC COMPARE.
+ - Derives analysis AE records and aligns them to ADSL by USUBJID.
+ - Typical content includes AE descriptors, analysis dates/days, and treatment-emergent logic.
+ - Compares it to the official pilot ADAE using PROC COMPARE.
 3) ADTTE TTDE derivation (03_derive_adtte_ttde.sas)
-Derives an ADTTE-like time-to-event dataset for:
-•	PARAMCD = TTDE — Time to First Dermatologic Event
-and compares it to the official pilot ADTTE using PROC COMPARE.
+ - Derives an ADTTE-like time-to-event dataset for:
+•	PARAMCD = TTDE — Time to First Dermatologic Event and compares it to the official pilot ADTTE using PROC COMPARE.
 
 ```
 
