@@ -78,16 +78,19 @@ and to compare the derived dataset with an **official ADTTE** (provided as an XP
 
 ## 2. Derivation Logic
 The derivation follows these main steps (mirroring the define.xml):
+
 ### 2.1 Libraries & Imports
 1.	Assign SAS libraries (e.g. src) and XPORT locations.
 2.	Use PROC COPY to import:
 -	adae.xpt → src.adae
 -	adsl.xpt → src.adsl
 -	adtte.xpt → src.adtte (official reference)
+  
 ### 2.2 Merge ADAE + ADSL Core Variables
 Create ADAE1 by left-joining ADAE to ADSL by USUBJID and keeping:
 -	Subject-level variables (STUDYID, SITEID, AGE, SEX, RACE, TRTSDT, TRTEDT, RFSTDTC, RFENDTC, TRT01*, etc.)
 -	AE-level variables (AEDECOD, AEBODSYS, TRTEMFL, ASTDT, AENDT, AESEQ)
+  
 ### 2.3 Identify Dermatologic Events
 From ADAE1, create ADAE_DERM:
   - Keep only treatment-emergent AEs:
@@ -111,12 +114,14 @@ o	AEDECOD contains terms such as:
 -	ACTINIC KERATOSIS
 -	DRUG ERUPTION
 You can think of this as the working definition of a dermatologic AE.
+
 ### 2.4 First Dermatologic AE per Subject
 1.	Sort ADAE_DERM by:
 2.	BY USUBJID ASTDT AESEQ;
 3.	Create FIRST_DERM containing only:
 4.	IF FIRST.USUBJID;
 This gives one row per subject, corresponding to the first dermatologic AE chronologically.
+
 ### 2.5 Derive ADT, AVAL, CNSR (Events)
 Merge FIRST_DERM with ADSL and:
 •	Convert RFSTDTC and RFENDTC to SAS dates (RFSTDT, RFENDT).
@@ -125,9 +130,11 @@ Merge FIRST_DERM with ADSL and:
 o	STARTDT = RFSTDT
 •	Set treatment duration:
 o	TRTDUR = TRTSDT – TRTEDT + 1
+
+
 Then apply the event/censor rule per define-style logic:
-•	If ASTDT_NUM is non-missing and
-ASTDT_NUM ≥ TRTSDT:
+
+•	If ASTDT_NUM is non-missing and ASTDT_NUM ≥ TRTSDT:
 o	ADT = ASTDT_NUM
 o	CNSR = 0
 o	EVNTDESC = "Dematologic Event Occured"
@@ -137,12 +144,17 @@ o	ADT = RFENDT
 o	CNSR = 1
 o	EVNTDESC = "Study Completion Date"
 o	SRCDOM = "ADSL", SRCVAR = "RFENDT", SRCSEQ = .
+
+
 Finally:
+
 •	AVAL = ADT – STARTDT + 1
 •	Set parameter metadata:
 o	PARAMCD = "TTDE"
 o	PARAM = "Time to First Dermatologic Event"
+
 This dataset is called ADTTE_EVENTS.
+
 ### 2.6 Derive Censored Records (No Derm AE)
 For subjects who never appear in ADAE_DERM:
 •	Start from ADSL and derive:
@@ -153,7 +165,9 @@ o	EVNTDESC = "Study Completion Date"
 o	PARAMCD = "TTDE"
 o	PARAM = "Time to First Dermatologic Event"
 o	AVAL = ADT – STARTDT + 1
+
 This dataset is called CENSORED2.
+
 ### 2.7 Combine & Align
 •	Combine ADTTE_EVENTS and CENSORED2 into:
 o	SRC.ADTTE_DERIVED
@@ -162,6 +176,7 @@ o	SRC.ADTTE_ALIGNED_FINAL
 ________________________________________
 ## 3. Validation (QC)
 The derived ADTTE is compared with the official ADTTE using PROC COMPARE:
+```
 proc compare base=src.adtte
              compare=src.adtte_aligned_final
              criterion=1E-8
@@ -171,7 +186,7 @@ proc compare base=src.adtte
   id studyid usubjid paramcd;
   title "Final Validation: Derived ADTTE vs Official ADTTE";
 run;
-
+```
 ________________________________________
 ## 4. Notes & Limitations
 •	The dermatologic event definition is based on a set of AEBODSYS and AEDECOD substrings; in a real study this would come from the clinical/statistical analysis plan or sponsor specifications. 
