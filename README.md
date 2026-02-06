@@ -7,8 +7,9 @@ This repository contains SAS programs demonstrating derivation of core ADaM data
 The ADTTE program also includes validation against the official pilot ADTTE using PROC COMPARE.
 Source data: CDISC SDTM/ADaM Pilot Project
 https://github.com/cdisc-org/sdtm-adam-pilot-project/tree/master
-
+```
 ## What this shows
+```
 •	Practical ADaM-style derivations in SAS
 •	Linking subject-level data (ADSL) to event-level data (ADAE)
 •	Building a time-to-event endpoint (TTDE) from AE + subject-level dates
