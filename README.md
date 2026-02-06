@@ -196,11 +196,11 @@ ________________________________________
 ## 4. Notes & Limitations
 ```
    •	The dermatologic event definition is based on a set of AEBODSYS and AEDECOD substrings;
-in a real study this would come from the clinical/statistical analysis plan or sponsor specifications. 
+        in a real study this would come from the clinical/statistical analysis plan or sponsor specifications. 
    •	This project focuses on a single parameter (TTDE) and a single event type (dermatologic AEs);
-extending to other TTE endpoints would follow a similar pattern.
-   •	Minor differences may still occur if the original ADTTE used slightly different inclusion/exclusion rules for AEs
-(e.g. seriousness, toxicity grade, additional MedDRA groupings).
+        extending to other TTE endpoints would follow a similar pattern.
+   •	Minor differences may still occur if the original ADTTE used slightly different
+        inclusion/exclusion rules for AEs (e.g. seriousness, toxicity grade, additional MedDRA groupings).
 ```
 ### 1. Why ADT and AVAL have 8 mismatches
 From your summary table of the eight subjects with ADT mismatches, you’ve basically shown that: 
@@ -209,10 +209,15 @@ MISMATCHES-BY-USUBJID
    •	In most subjects, our rule
 “first dermatologic, treatment-emergent AE with ASTDT ≥ TRTSDT, otherwise censor at RFENDT” reproduces the official ADTTE.
    •	For 8 specific USUBJIDs, the sponsor appears to:
-       o	sometimes use RFENDTC (RFENDT) as ADT (e.g., certain DCDECOD patterns like PROTOCOL VIOLATION or STUDY TERMINATED BY SPONSOR), or
-       o	sometimes use a particular AE date (e.g. APPLICATION SITE ERYTHEMA, PRURITUS, SINUS BRADYCARDIA) even when that date is before TRTSDT or when there are other derm AEs.
-Because AVAL = ADT – STARTDT + 1, every ADT mismatch automatically creates a mismatch in AVAL for those same 8 records; nothing wrong with the AVAL logic, it’s just inherited from ADT.
-       o From these specific 8 USUBJID, for three of them the ADT has started when a skin related adverse event happened, therefore the CNSR, EVNTDSCR, SRCDOM, SRCVAR are correctly derived. For the 5 remaining USUBJID, because of the above reasons, we have mismatches.
+       o	sometimes use RFENDTC (RFENDT) as ADT (e.g., certain DCDECOD patterns like PROTOCOL VIOLATION
+            or STUDY TERMINATED BY SPONSOR), or
+       o	sometimes use a particular AE date (e.g. APPLICATION SITE ERYTHEMA, PRURITUS, SINUS BRADYCARDIA)
+            even when that date is before TRTSDT or when there are other derm AEs. Because AVAL = ADT – STARTDT + 1,
+            every ADT mismatch automatically creates a mismatch in AVAL for those same 8 records;
+            nothing wrong with the AVAL logic, it’s just inherited from ADT.
+       o From these specific 8 USUBJID, for three of them the ADT has started when a skin related adverse event happened,
+         therefore the CNSR, EVNTDSCR, SRCDOM, SRCVAR are correctly derived. For the 5 remaining USUBJID, because of the
+         above reasons, we have mismatches.
 ```
 ### 2. Why SRCSEQ is off (8 + 2)
 What I noticed about SRCSEQ is:
@@ -225,7 +230,8 @@ But:
 2.	Plus 2 extra mismatches where:
    o	ADT actually does match between our ADTTE and the official one, but
    o	there are multiple ADAE rows with that same ASTDT for the subject, and
-   o	our code, by default, picks the first AESEQ for that date, while the theirs seems to pick a different one (maybe different AEDECOD, seriousness, severity, etc.).
+   o	our code, by default, picks the first AESEQ for that date, while the theirs seems to pick a different one
+        (maybe different AEDECOD, seriousness, severity, etc.).
 So you get:
        •	8 SRCSEQ mismatches that are “downstream of ADT differences”, and
        •	2 SRCSEQ mismatches that are “tie-breaking differences when multiple AESEQ share the same date”.
