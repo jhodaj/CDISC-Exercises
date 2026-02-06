@@ -155,7 +155,7 @@ o	SRC.ADTTE_DERIVED
 •	Reorder and relabel variables to match CDISC ADTTE structure:
 o	SRC.ADTTE_ALIGNED_FINAL
 ________________________________________
-3. Validation (QC)
+## 3. Validation (QC)
 The derived ADTTE is compared with the official ADTTE using PROC COMPARE:
 proc compare base=src.adtte
              compare=src.adtte_aligned_final
@@ -168,7 +168,7 @@ proc compare base=src.adtte
 run;
 
 ________________________________________
-4. Notes & Limitations
+## 4. Notes & Limitations
 •	The dermatologic event definition is based on a set of AEBODSYS and AEDECOD substrings; in a real study this would come from the clinical/statistical analysis plan or sponsor specifications. 
 •	This project focuses on a single parameter (TTDE) and a single event type (dermatologic AEs); extending to other TTE endpoints would follow a similar pattern.
 •	Minor differences may still occur if the original ADTTE used slightly different inclusion/exclusion rules for AEs (e.g. seriousness, toxicity grade, additional MedDRA groupings).
@@ -202,7 +202,7 @@ So you get:
 •	2 SRCSEQ mismatches that are “tie-breaking differences when multiple AESEQ share the same date”.
 
 ________________________________________
-5. Contact / Author
+## 5. Contact / Author
 •	Author: Jezerca Hodaj
 •	Topic: CDISC-style SDTM --> ADaM
 Feel free to open an issue or fork this repo if you’d like to extend the derivation to additional parameters or event types.
