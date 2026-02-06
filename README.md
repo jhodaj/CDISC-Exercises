@@ -95,7 +95,7 @@ Create ADAE1 by left-joining ADAE to ADSL by USUBJID and keeping:
 From ADAE1, create ADAE_DERM:
   - Keep only treatment-emergent AEs:
 TRTEMFL = "Y"
-
+```
 •	Flag as dermatologic if:
    o AEBODSYS contains "DERMAT" or "SKIN", or
    o AEDECOD contains terms such as:
@@ -113,6 +113,7 @@ TRTEMFL = "Y"
        -	SKIN ULCER
        -	ACTINIC KERATOSIS
        -	DRUG ERUPTION
+```
 You can think of this as the working definition of a dermatologic AE.
 
 ### 2.4 First Dermatologic AE per Subject
@@ -194,9 +195,12 @@ run;
 ________________________________________
 ## 4. Notes & Limitations
 ```
-   •	The dermatologic event definition is based on a set of AEBODSYS and AEDECOD substrings; in a real study this would come from the clinical/statistical analysis plan or sponsor specifications. 
-   •	This project focuses on a single parameter (TTDE) and a single event type (dermatologic AEs); extending to other TTE endpoints would follow a similar pattern.
-   •	Minor differences may still occur if the original ADTTE used slightly different inclusion/exclusion rules for AEs (e.g. seriousness, toxicity grade, additional MedDRA groupings).
+   •	The dermatologic event definition is based on a set of AEBODSYS and AEDECOD substrings;
+in a real study this would come from the clinical/statistical analysis plan or sponsor specifications. 
+   •	This project focuses on a single parameter (TTDE) and a single event type (dermatologic AEs);
+extending to other TTE endpoints would follow a similar pattern.
+   •	Minor differences may still occur if the original ADTTE used slightly different inclusion/exclusion rules for AEs
+(e.g. seriousness, toxicity grade, additional MedDRA groupings).
 ```
 ### 1. Why ADT and AVAL have 8 mismatches
 From your summary table of the eight subjects with ADT mismatches, you’ve basically shown that: 
